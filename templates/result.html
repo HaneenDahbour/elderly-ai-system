@@ -166,61 +166,6 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .activity-clickable {
-            display: block;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .activity-clickable::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .activity-clickable:hover::before {
-            width: 500px;
-            height: 500px;
-        }
-
-        .activity-clickable:hover {
-            transform: scale(1.05);
-            box-shadow: 0 12px 36px rgba(61, 90, 76, 0.35);
-        }
-
-        .activity-clickable:active {
-            transform: scale(0.98);
-        }
-
-        .click-hint {
-            display: block;
-            font-size: 1.3rem;
-            margin-top: 0.8rem;
-            opacity: 0.9;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 0.7;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1.05);
-            }
-        }
-
         @keyframes scaleIn {
             from {
                 opacity: 0;
@@ -260,30 +205,36 @@
             font-weight: 700;
         }
 
-        .suggestion-list {
-            list-style: none;
-            padding: 0;
+        .suggestion-grid {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1.5rem;
         }
 
-        .suggestion-list li {
+        .suggestion-button {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             background: white;
-            padding: 1.3rem 1.5rem;
-            margin: 1rem 0;
-            border-radius: 14px;
-            font-size: 1.3rem;
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            text-decoration: none;
             color: var(--text-primary);
+            font-size: 1.4rem;
+            font-weight: 600;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            position: relative;
-            padding-right: 3.5rem;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
             animation: fadeInLeft 0.5s ease-out both;
         }
 
-        .suggestion-list li:nth-child(1) { animation-delay: 1s; }
-        .suggestion-list li:nth-child(2) { animation-delay: 1.1s; }
-        .suggestion-list li:nth-child(3) { animation-delay: 1.2s; }
-        .suggestion-list li:nth-child(4) { animation-delay: 1.3s; }
-        .suggestion-list li:nth-child(5) { animation-delay: 1.4s; }
+        .suggestion-button:nth-child(1) { animation-delay: 1s; }
+        .suggestion-button:nth-child(2) { animation-delay: 1.1s; }
+        .suggestion-button:nth-child(3) { animation-delay: 1.2s; }
+        .suggestion-button:nth-child(4) { animation-delay: 1.3s; }
+        .suggestion-button:nth-child(5) { animation-delay: 1.4s; }
 
         @keyframes fadeInLeft {
             from {
@@ -296,28 +247,62 @@
             }
         }
 
-        .suggestion-list li::before {
-            content: '✓';
+        .suggestion-button::before {
+            content: '';
             position: absolute;
-            right: 1.2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: white;
-            background: var(--soft-sage);
-            width: 2rem;
-            height: 2rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.1rem;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(135deg, var(--soft-sage), var(--gentle-gold));
+            transition: width 0.3s ease;
         }
 
-        .suggestion-list li:hover {
+        .suggestion-button:hover::before {
+            width: 100%;
+            opacity: 0.1;
+        }
+
+        .suggestion-button:hover {
             transform: translateX(-8px);
-            box-shadow: 0 6px 20px rgba(61, 90, 76, 0.15);
-            background: linear-gradient(135deg, white, #FAFDF9);
+            box-shadow: 0 8px 24px rgba(61, 90, 76, 0.2);
+            border-color: var(--soft-sage);
+            background: linear-gradient(135deg, white, #F8FFF7);
+        }
+
+        .suggestion-button:active {
+            transform: translateX(-5px) scale(0.98);
+        }
+
+        .suggestion-icon {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .suggestion-icon::before {
+            content: '🎯';
+            font-size: 2rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .suggestion-arrow {
+            color: var(--soft-sage);
+            font-size: 1.8rem;
+            transition: transform 0.3s ease;
+        }
+
+        .suggestion-button:hover .suggestion-arrow {
+            transform: translateX(-5px);
         }
 
         .back-button {
@@ -416,17 +401,13 @@
                 padding: 1.5rem;
             }
 
-            .click-hint {
-                font-size: 1.1rem;
-            }
-
             .explanation strong {
                 font-size: 1.4rem;
             }
 
-            .suggestion-list li {
+            .suggestion-button {
                 font-size: 1.2rem;
-                padding: 1.1rem 1.3rem 1.1rem 3rem;
+                padding: 1.3rem 1.5rem;
             }
 
             .back-button {
@@ -453,12 +434,13 @@
                 padding: 1.3rem;
             }
 
-            .click-hint {
-                font-size: 1rem;
+            .suggestion-button {
+                font-size: 1.1rem;
+                padding: 1.2rem;
             }
 
-            .suggestion-list li {
-                font-size: 1.1rem;
+            .suggestion-icon::before {
+                font-size: 1.5rem;
             }
         }
 
@@ -490,24 +472,22 @@
             
             <h2>تم اختيار النشاط المناسب لك</h2>
             
-            {% if activity_link %}
-            <a href="{{ activity_link }}" target="_blank" rel="noopener noreferrer" class="activity-result activity-clickable">
-                {{ activity }}
-                <span class="click-hint">👆 اضغط هنا للبدء بالنشاط</span>
-            </a>
-            {% else %}
             <div class="activity-result">
                 {{ activity }}
             </div>
-            {% endif %}
 
             <div class="explanation">
-                <strong>💡 أمثلة وأفكار للأنشطة المقترحة:</strong>
-                <ul class="suggestion-list">
+                <strong>🎯 اختر النشاط الذي تريد البدء به:</strong>
+                <div class="suggestion-grid">
                     {% for item in suggestions %}
-                    <li>{{ item }}</li>
+                    <a href="{{ item.link }}" target="_blank" rel="noopener noreferrer" class="suggestion-button">
+                        <div class="suggestion-icon">
+                            <span>{{ item.name }}</span>
+                        </div>
+                        <span class="suggestion-arrow">←</span>
+                    </a>
                     {% endfor %}
-                </ul>
+                </div>
             </div>
 
             <a href="/" class="back-button">

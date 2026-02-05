@@ -29,35 +29,44 @@ def predict():
     prediction = model.predict(data)
     activity = le.inverse_transform(prediction)[0]
     
-    # روابط الأنشطة الحقيقية على الإنترنت
-    activity_link = ""
+    # روابط الأنشطة مع الاقتراحات
+    suggestions_with_links = []
     
     if activity == "نادي حوار":
-        activity_link = "https://meet.jit.si"  # منصة اجتماعات مجانية
-        
-    elif activity == "جلسة ألغاز":
-        activity_link = "https://www.puzzle-sudoku.com"  # ألعاب ألغاز متنوعة
-        
-    elif activity == "تمارين خفيفة":
-        activity_link = "https://www.youtube.com/watch?v=8BcPHWGQO44"  # فيديو تمارين للكبار
-        
-    elif activity == "نشاط فني":
-        activity_link = "https://sketch.io/sketchpad/"  # لوحة رسم أونلاين
-    
-    # Activity suggestions
-    suggestions = []
-
-    if activity == "نادي حوار":
-        suggestions = ["جلسة حوار جماعي", "مناقشة قصة", "نادي ذكريات", "لقاء عائلي", "مشاركة تجارب الحياة"]
+        suggestions_with_links = [
+            {"name": "جلسة دردشة جماعية", "link": "https://meet.jit.si"},
+            {"name": "مناقشة قصة", "link": "https://www.storycorps.org"},
+            {"name": "نادي ذكريات", "link": "https://www.reminiscencetherapyarchive.org"},
+            {"name": "لقاء عائلي افتراضي", "link": "https://zoom.us"},
+            {"name": "مشاركة تجارب الحياة", "link": "https://www.storybooth.com"}
+        ]
 
     elif activity == "جلسة ألغاز":
-        suggestions = ["حل كلمات متقاطعة", "ألعاب ذاكرة", "ألغاز منطقية", "سودوكو", "ألعاب الذكاء"]
+        suggestions_with_links = [
+            {"name": "كلمات متقاطعة", "link": "https://www.wordgames.com/crossword.html"},
+            {"name": "سودوكو", "link": "https://www.sudoku.com"},
+            {"name": "ألعاب ذاكرة", "link": "https://www.memozor.com/memory-games"},
+            {"name": "ألغاز منطقية", "link": "https://www.puzzle-sudoku.com"},
+            {"name": "ألعاب الذكاء", "link": "https://www.lumosity.com"}
+        ]
 
     elif activity == "تمارين خفيفة":
-        suggestions = ["تمارين تمدد", "مشي جماعي", "حركات كرسي خفيفة", "يوغا للمبتدئين", "تمارين توازن"]
+        suggestions_with_links = [
+            {"name": "تمارين كرسي", "link": "https://www.youtube.com/watch?v=8BcPHWGQO44"},
+            {"name": "مشي منزلي", "link": "https://www.youtube.com/watch?v=enYITYwvPAQ"},
+            {"name": "يوغا للمبتدئين", "link": "https://www.youtube.com/watch?v=v7AYKMP6rOE"},
+            {"name": "تمارين توازن", "link": "https://www.youtube.com/watch?v=FNY3bKfE8gA"},
+            {"name": "تمارين تمدد", "link": "https://www.youtube.com/watch?v=g_tea8ZNk5A"}
+        ]
 
     elif activity == "نشاط فني":
-        suggestions = ["رسم وتلوين", "أشغال يدوية", "تشكيل بالصلصال", "موسيقى هادئة", "خط عربي"]
+        suggestions_with_links = [
+            {"name": "رسم أونلاين", "link": "https://sketch.io/sketchpad/"},
+            {"name": "تلوين للكبار", "link": "https://www.thecolor.com"},
+            {"name": "موسيقى هادئة", "link": "https://www.youtube.com/watch?v=lFcSrYw-ARY"},
+            {"name": "صناعة فنية", "link": "https://www.pinterest.com/search/pins/?q=easy%20crafts%20for%20seniors"},
+            {"name": "خط عربي", "link": "https://www.calligrapher.ai"}
+        ]
 
     explanation = ""
 
@@ -92,9 +101,8 @@ def predict():
     return render_template(
         "result.html",
         activity=activity,
-        activity_link=activity_link,
         explanation=explanation,
-        suggestions=suggestions
+        suggestions=suggestions_with_links
     )
 
 
@@ -188,6 +196,15 @@ def page_not_found(e):
 
 
 if __name__ == "__main__":
+    print("=" * 60)
+    print("🚀 تم تشغيل نظام توصية الأنشطة لكبار السن بنجاح!")
+    print("=" * 60)
+    print("📍 الصفحة الرئيسية: http://0.0.0.0:10000/")
+    print("📊 صفحة الإحصائيات: http://0.0.0.0:10000/stats")
+    print("=" * 60)
+    print("💡 ملاحظة: سيتم حفظ جميع التنبؤات في ملف history.csv")
+    print("=" * 60)
+    
     import os
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port, debug=True)
