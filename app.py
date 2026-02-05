@@ -28,6 +28,38 @@ def predict():
 
     prediction = model.predict(data)
     activity = le.inverse_transform(prediction)[0]
+    # روابط الأنشطة الفعلية على الإنترنت
+    activity_links = {}
+
+    if activity == "نادي حوار":
+        activity_links = {
+            "جلسة دردشة جماعية": "https://meet.jit.si",
+            "مناقشة قصة": "https://readtheory.org",
+            "نادي ذكريات": "https://www.storycorps.org"
+        }
+
+    elif activity == "جلسة ألغاز":
+        activity_links = {
+            "كلمات متقاطعة": "https://www.wordgames.com/crossword",
+            "ألغاز منطقية": "https://www.brainzilla.com/logic",
+            "ألعاب ذاكرة": "https://www.memozor.com/memory-games"
+        }
+
+    elif activity == "تمارين خفيفة":
+        activity_links = {
+            "تمارين كرسي": "https://www.youtube.com/watch?v=8BcPHWGQO44",
+            "مشي منزلي": "https://www.youtube.com/watch?v=enYITYwvPAQ",
+            "تمارين توازن": "https://www.youtube.com/watch?v=FNY3bKfE8gA"
+        }
+
+    elif activity == "نشاط فني":
+        activity_links = {
+            "رسم أونلاين": "https://sketch.io/sketchpad/",
+            "تلوين": "https://www.thecolor.com",
+            "موسيقى هادئة": "https://www.youtube.com/watch?v=lFcSrYw-ARY"
+        }
+
+    
     
     # Activity suggestions
     suggestions = []
@@ -74,7 +106,15 @@ def predict():
             writer.writerow(["age", "health", "mobility", "mood", "lonely", "interest", "activity"])
         writer.writerow([age, health, mobility, mood, lonely, interest, activity])
 
-    return render_template("result.html", activity=activity, explanation=explanation, suggestions=suggestions)
+    return render_template(
+    "result.html",
+    activity=activity,
+    explanation=explanation,
+    suggestions=suggestions,
+    activity_links=activity_links
+    )
+
+
 
 @app.route('/stats')
 @app.route('/stats/')
@@ -166,12 +206,6 @@ def page_not_found(e):
 
 
 if __name__ == "__main__":
-    print("=" * 60)
-    print("🚀 تم تشغيل نظام توصية الأنشطة لكبار السن بنجاح!")
-    print("=" * 60)
-    print("📍 الصفحة الرئيسية: http://0.0.0.0:10000/")
-    print("📊 صفحة الإحصائيات: http://0.0.0.0:10000/stats")
-    print("=" * 60)
-    print("💡 ملاحظة: سيتم حفظ جميع التنبؤات في ملف history.csv")
-    print("=" * 60)
-    app.run(host="0.0.0.0", port=10000, debug=True)
+    import os
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
