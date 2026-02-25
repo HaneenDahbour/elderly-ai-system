@@ -25,7 +25,7 @@ def home():
     return render_template("index.html")
 
 
-@app.route("/predict", methods=["POST"])
+@app.route("/predict", methods=["GET", "POST"])
 def predict():
     """معالجة البيانات وإعطاء التوصية"""
     age = int(request.form["age"])
