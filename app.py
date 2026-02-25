@@ -4,7 +4,6 @@ import numpy as np
 import csv
 import os
 from collections import Counter
-import pandas as pd
 
 
 app = Flask(__name__)
@@ -37,14 +36,8 @@ def predict():
     interest = int(request.form["interest"])
 
 
-    data = pd.DataFrame([{
-    "age": age,
-    "health": health,
-    "mobility": mobility,
-    "mood": mood,
-    "lonely": lonely,
-    "interest": interest
-}])
+
+    data = np.array([[age, health, mobility, mood, lonely, interest]])
 
     prediction = model.predict(data)
     activity = le.inverse_transform(prediction)[0]
